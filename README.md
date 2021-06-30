@@ -72,7 +72,7 @@ plugins:
 
 Now you can use this **marker** in the Markdown syntax:
 
-```md
+```
 ![custom-marker](https://www.youtube.com/embed/LXb3EKWsInQ)
 ```
 
@@ -80,7 +80,7 @@ Now you can use this **marker** in the Markdown syntax:
 
 By default, the following CSS styles are used for the `<iframe>` tag that is inserted into the final page:
 
-```
+```css
 position: relative;
 width: 100%;
 height: 22.172vw;
