@@ -40,11 +40,11 @@ class Plugin(mkdocs.plugins.BasePlugin):
         '''
 
         result = re.search(
-            r'(https?:\/|\.|\.\.)?(\/[^\s\/"<>]+)+\/?',
+            r'src=\"[^\s]*\"',
             tag
         )
 
-        return result[0] if result is not None else None
+        return result[0][5:-1] if result is not None else None
 
 
     def create_repl_tag(self, src):
