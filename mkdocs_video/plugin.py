@@ -59,12 +59,14 @@ class Plugin(mkdocs.plugins.BasePlugin):
             ["{}: {}".format(str(atr), str(style[atr])) for atr in style]
         )
 
-        return "<iframe "\
+        return "<div class=\"video-container\">"\
+            "<iframe "\
             "src=\"{}\" "\
             "style=\"{}\" "\
             "frameborder=\"0\" "\
             "allowfullscreen>"\
-            "</iframe>".format(src, style)
+            "</iframe>"\
+            "</div>".format(src, style)
 
 
     def find_marked_tags(self, content):
