@@ -92,7 +92,7 @@ You can change the style by adding the following lines to your `mkdocs.yml`:
 plugins:
   - mkdocs-video:
       css_style:
-        weight: "100%"
+        width: "100%"
         height: "22.172vw"
         ...
 ```
