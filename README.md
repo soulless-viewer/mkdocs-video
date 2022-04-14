@@ -97,6 +97,47 @@ plugins:
         ...
 ```
 
+### Tag `<video>`
+
+By default, the `<iframe>` tag will be used to display the video in the final page, but in some cases you may need to use `<video>` tag instead. You can use it by adding the following lines to your `mkdocs.yml`:
+
+```yaml
+plugins:
+  - mkdocs-video:
+      is_video: True
+      ...
+```
+
+### Video type
+
+> This parameter will only work with the `<video>` tag (`is_video: True`)
+
+You can specify the MIME type of the video *(default: `mp4`)* resource by adding the following lines to your `mkdocs.yml`:
+
+```yaml
+plugins:
+  - mkdocs-video:
+      is_video: True
+      video_type: ogg
+      ...
+```
+
+### Video autoplay
+
+> This parameter will only work with the `<video>` tag (`is_video: True`)
+
+You can specify whether the video should be played automatically *(default: `False`)* or not by adding the following lines to your `mkdocs.yml`:
+
+```yaml
+plugins:
+  - mkdocs-video:
+      is_video: True
+      video_autoplay: True
+      ...
+```
+
+> The operation of this parameter may be affected by browser settings or video provider configuration
+
 ## Contributing
 
 1.  Fork it.

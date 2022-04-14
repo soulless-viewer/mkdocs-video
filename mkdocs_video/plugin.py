@@ -1,11 +1,15 @@
 import re
 import mkdocs
 from mkdocs.config import config_options
+from mkdocs.exceptions import ConfigurationError
 
 
 class Plugin(mkdocs.plugins.BasePlugin):
     config_scheme = (
         ("mark", config_options.Type(str, default="type:video")),
+        ("is_video", config_options.Type(bool, default=False)),
+        ("video_type", config_options.Type(str, default="mp4")),
+        ("video_autoplay", config_options.Type(bool, default=False)),
         ("css_style", config_options.Type(dict, default={
             "position": "relative",
             "width": "100%",
@@ -59,14 +63,24 @@ class Plugin(mkdocs.plugins.BasePlugin):
             ["{}: {}".format(str(atr), str(style[atr])) for atr in style]
         )
 
-        return "<div class=\"video-container\">"\
-            "<iframe "\
-            "src=\"{}\" "\
-            "style=\"{}\" "\
-            "frameborder=\"0\" "\
-            "allowfullscreen>"\
-            "</iframe>"\
-            "</div>".format(src, style)
+        is_video = self.config["is_video"]
+        autoplay = self.config["video_autoplay"]
+        video_type = self.config['video_type'].lower().strip()
+        if " " in video_type or "/" in video_type:
+            raise ConfigurationError("Unsupported video type")
+        video_type = f"video/{video_type}"
+
+        tag = (
+            f"<video style=\"{style}\" controls {'autoplay' if autoplay else ''} >"
+                f"<source src=\"{src}\" type=\"{video_type}\" />"
+            "</video>"
+        ) if is_video else (
+            f"<iframe src=\"{src}\" style=\"{style}\" "
+                "frameborder=\"0\" allowfullscreen>"
+            "</iframe>"
+        )
+
+        return f"<div class=\"video-container\">{tag}</div>"
 
 
     def find_marked_tags(self, content):
