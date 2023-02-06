@@ -9,6 +9,9 @@ class Plugin(mkdocs.plugins.BasePlugin):
         ("mark", config_options.Type(str, default="type:video")),
         ("is_video", config_options.Type(bool, default=False)),
         ("video_type", config_options.Type(str, default="mp4")),
+        ("video_muted", config_options.Type(bool, default=False)),
+        ("video_loop", config_options.Type(bool, default=False)),
+        ("video_controls", config_options.Type(bool, default=True)),
         ("video_autoplay", config_options.Type(bool, default=False)),
         ("css_style", config_options.Type(dict, default={
             "position": "relative",
@@ -64,23 +67,31 @@ class Plugin(mkdocs.plugins.BasePlugin):
         )
 
         is_video = self.config["is_video"]
-        autoplay = self.config["video_autoplay"]
+        video_loop = self.config["video_loop"]
+        video_muted = self.config["video_muted"]
+        video_controls = self.config["video_controls"]
+        video_autoplay = self.config["video_autoplay"]
         video_type = self.config['video_type'].lower().strip()
         if " " in video_type or "/" in video_type:
             raise ConfigurationError("Unsupported video type")
         video_type = f"video/{video_type}"
 
         tag = (
-            f"<video style=\"{style}\" controls {'autoplay' if autoplay else ''} >"
-                f"<source src=\"{src}\" type=\"{video_type}\" />"
-            "</video>"
+            f'<video style="{style}"'
+                f'{" loop" if video_loop else ""}'
+                f'{" muted" if video_muted else ""}'
+                f'{" controls" if video_controls else ""}'
+                f'{" autoplay" if video_autoplay else ""}'
+            '>'
+                f'<source src="{src}" type="{video_type}" />'
+            '</video>'
         ) if is_video else (
-            f"<iframe src=\"{src}\" style=\"{style}\" "
-                "frameborder=\"0\" allowfullscreen>"
-            "</iframe>"
+            f'<iframe src="{src}" style="{style}" frameborder="0"'
+                'allowfullscreen>'
+            '</iframe>'
         )
 
-        return f"<div class=\"video-container\">{tag}</div>"
+        return f'<div class="video-container">{tag}</div>'
 
 
     def find_marked_tags(self, content):
