@@ -138,6 +138,54 @@ plugins:
 
 > The operation of this parameter may be affected by browser settings or video provider configuration
 
+### Video loop
+
+> This parameter will only work with the `<video>` tag (`is_video: True`)
+
+You can specify whether the video should be looped *(default: `False`)* or not by adding the following lines to your `mkdocs.yml`:
+
+```yaml
+plugins:
+  - mkdocs-video:
+      is_video: True
+      video_loop: True
+      ...
+```
+
+> The operation of this parameter may be affected by browser settings or video provider configuration
+
+### Video muted
+
+> This parameter will only work with the `<video>` tag (`is_video: True`)
+
+You can specify whether the video should be muted *(default: `False`)* or not by adding the following lines to your `mkdocs.yml`:
+
+```yaml
+plugins:
+  - mkdocs-video:
+      is_video: True
+      video_muted: True
+      ...
+```
+
+> The operation of this parameter may be affected by browser settings or video provider configuration
+
+### Video controls
+
+> This parameter will only work with the `<video>` tag (`is_video: True`)
+
+You can specify whether the video controls should be displayed *(default: `True`)* or not by adding the following lines to your `mkdocs.yml`:
+
+```yaml
+plugins:
+  - mkdocs-video:
+      is_video: True
+      video_controls: False
+      ...
+```
+
+> The operation of this parameter may be affected by browser settings or video provider configuration
+
 ## Contributing
 
 1.  Fork it.
