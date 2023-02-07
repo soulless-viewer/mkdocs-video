@@ -2,6 +2,21 @@
 
 This plugin allows you to embed videos on the documentation pages using a simple Markdown syntax.
 
+## Contents
+
+* [Installation](#installation)
+* [Usage](#usage)
+* [Configuration](#configuration)  
+    * [Marker](#marker)
+    * [Style](#style)
+    * [Tag `<video>`](#tag-video)
+    * [Video type](#video-type)
+    * [Video autoplay](#video-autoplay)
+    * [Video loop](#video-loop)
+    * [Video muted](#video-muted)
+    * [Video controls](#video-controls)
+* [Embedding examples](#embedding-examples)
+
 ## Installation
 
 Install the package with pip:
@@ -185,6 +200,23 @@ plugins:
 ```
 
 > The operation of this parameter may be affected by browser settings or video provider configuration
+
+## Embedding examples
+
+The following list contains some of the popular services, as well as examples of direct and embedded links to their videos.
+
+* YouTube
+    * https://www.youtube.com/watch?v=iSpglxHTJVM
+    * https://www.youtube.com/embed/iSpglxHTJVM
+* Vimeo
+    * https://vimeo.com/224903454
+    * https://player.vimeo.com/video/224903454
+* Dailymotion
+    * https://www.dailymotion.com/video/x7ogfqo
+    * https://www.dailymotion.com/embed/video/x7ogfqo
+* Facebook Watch
+    * https://www.facebook.com/gamechangersmovie/videos/343098689705587
+    * https://www.facebook.com/plugins/video.php?href=https://www.facebook.com/gamechangersmovie/videos/343098689705587
 
 ## Contributing
 
