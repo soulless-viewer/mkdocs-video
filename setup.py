@@ -5,7 +5,7 @@ with open('README.md', encoding='utf-8') as f:
 
 setup(
     name="mkdocs-video",
-    version="1.4.0",
+    version="1.5.0",
     author="Mikalai Lisitsa",
     author_email="mikalai.lisitsa@gmail.com",
     url="https://github.com/soulless-viewer/mkdocs-video",
@@ -15,7 +15,8 @@ setup(
     license='MIT',
     packages=find_packages(),
     install_requires=[
-        "mkdocs>=1.1.0,<2"
+        "mkdocs>=1.1.0,<2",
+        "lxml>=4.7.0"
     ],
     include_package_data=True,
     python_requires='>=3.6',

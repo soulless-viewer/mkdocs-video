@@ -1,5 +1,5 @@
-import re
 import mkdocs
+import lxml.html
 from mkdocs.config import config_options
 from mkdocs.exceptions import ConfigurationError
 
@@ -13,97 +13,79 @@ class Plugin(mkdocs.plugins.BasePlugin):
         ("video_loop", config_options.Type(bool, default=False)),
         ("video_controls", config_options.Type(bool, default=True)),
         ("video_autoplay", config_options.Type(bool, default=False)),
-        ("css_style", config_options.Type(dict, default={
-            "position": "relative",
-            "width": "100%",
-            "height": "22.172vw"
-        }))
+        ("css_style", config_options.Type(
+            dict,
+            default={
+                "position": "relative",
+                "width": "100%",
+                "height": "22.172vw"
+            }
+        ))
     )
 
 
     def on_page_content(self, html, page, config, files):
-        # Separate tags by strings to simplify the use of regex
-        content = html
-        content = re.sub(r'>\s*<', '>\n<', content)
-
-        tags = self.find_marked_tags(content)
-
+        content = lxml.html.fromstring(html)
+        tags = content.xpath(f'//img[@alt="{self.config["mark"]}" and @src]')
         for tag in tags:
-            src = self.get_tag_src(tag)
-            if src is None:
+            if not tag.attrib.get("src"):
                 continue
-            repl_tag = self.create_repl_tag(src)
-            esc_tag = re.sub(r'\/', "\\\\/", tag)
-            html = re.sub(esc_tag, repl_tag, html)
-
-        return html
+            tag.getparent().replace(tag, self.create_repl_tag(tag))
+        return lxml.html.tostring(content, encoding="unicode")
 
 
-    def get_tag_src(self, tag):
-        '''
-        Get value of the src attribute
-
-        return: str
-        '''
-
-        result = re.search(
-            r'src=\"[^\s]*\"',
-            tag
-        )
-
-        return result[0][5:-1] if result is not None else None
-
-
-    def create_repl_tag(self, src):
-        '''
+    def create_repl_tag(self, tag):
+        """
         Сreate a replacement tag with the specified source and style.
 
         return: str
-        '''
-
-        style = self.config["css_style"]
-        style = "; ".join(
-            ["{}: {}".format(str(atr), str(style[atr])) for atr in style]
-        )
+        """
 
         is_video = self.config["is_video"]
-        video_loop = self.config["video_loop"]
-        video_muted = self.config["video_muted"]
-        video_controls = self.config["video_controls"]
-        video_autoplay = self.config["video_autoplay"]
-        video_type = self.config['video_type'].lower().strip()
-        if " " in video_type or "/" in video_type:
-            raise ConfigurationError("Unsupported video type")
-        video_type = f"video/{video_type}"
+        repl_tag = lxml.html.Element("video" if is_video else "iframe")
 
-        tag = (
-            f'<video style="{style}"'
-                f'{" loop" if video_loop else ""}'
-                f'{" muted" if video_muted else ""}'
-                f'{" controls" if video_controls else ""}'
-                f'{" autoplay" if video_autoplay else ""}'
-            '>'
-                f'<source src="{src}" type="{video_type}" />'
-            '</video>'
-        ) if is_video else (
-            f'<iframe src="{src}" style="{style}" frameborder="0"'
-                'allowfullscreen>'
-            '</iframe>'
-        )
+        # Basic config if global is disabled
+        if is_video:
+            repl_subtag = lxml.html.Element("source")
+            repl_subtag.set("src", tag.attrib["src"])
+            video_type = self.config["video_type"].lower().strip()
+            if any(i in video_type for i in [" ", "/"]):
+                raise ConfigurationError("Unsupported video type")
+            video_type = f"video/{video_type}"
+            repl_subtag.set("type", video_type)
+            repl_tag.append(repl_subtag)
+        else:
+            repl_tag.set("src", tag.attrib["src"])
 
-        return f'<div class="video-container">{tag}</div>'
+        # Extended config if global is enabled
+        if "disable-global-config" not in tag.attrib:
+            css_style = ";".join(
+                [f"{k}:{v}" for k, v in self.config["css_style"].items()]
+            )
+            repl_tag.set("style", css_style)
 
+            if is_video:
+                if self.config["video_loop"]:
+                    repl_tag.set("loop")
+                if self.config["video_muted"]:
+                    repl_tag.set("muted")
+                if self.config["video_controls"]:
+                    repl_tag.set("controls")
+                if self.config["video_autoplay"]:
+                    repl_tag.set("autoplay")
+            else:
+                repl_tag.set("frameborder", "0")
+                repl_tag.set("allowfullscreen")
+        else:
+            tag.attrib.pop("disable-global-config")
 
-    def find_marked_tags(self, content):
-        '''
-        Find image tag with marked alternative name
+        # Duplicate everything from original tag (except 2)
+        for attr, val in tag.attrib.items():
+            if "src" != attr:
+                repl_tag.set(attr, val if val else None)
 
-        return: list
-        '''
+        div = lxml.html.Element("div")
+        div.set("class", "video-container")
+        div.append(repl_tag)
 
-        mark = self.config["mark"]
-
-        return re.findall(
-            r'<img alt="' + mark + '" src="[^\s]*"\s*\/>',
-            content
-        )
+        return div

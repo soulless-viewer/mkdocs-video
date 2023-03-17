@@ -73,6 +73,64 @@ You can also use relative paths for videos stored together with your content
 
 ## Configuration
 
+The following parameters can be used to change the functionality and appearance of video elements in the final HTML. Keep in mind that the plugin configuration parameters are applied globally to all relevant [marked](#marker) elements. To fine-tune each video element, you can use the [Attribute Lists](https://python-markdown.github.io/extensions/attr_list/) extension.
+
+When using this plugin and the mentioned extension together, the following rules apply *(with an illustrative examples)*:
+
+0. *[Let's assume we have this plugin configuration]*
+   ```yaml
+   # mkdocs.yml
+   markdown_extensions:
+     - attr_list
+   plugins:
+     - mkdocs-video:
+         is_video: True
+         video_muted: True
+         video_controls: True
+         css_style:
+           width: "50%"
+   ```
+
+1. The plugin attributes are used globally by default
+   ```markdown
+   ![type:video](video.mp4)
+   ```
+   ```html
+   <video style="width:50%" muted="" controls="" alt="type:video">
+      <source src="video.mp4" type="video/mp4">
+   </video>
+   ```
+
+2. The extension attributes will override the corresponding plugin attributes, but the rest will remain by default.
+   ```markdown
+   ![type:video](video.mp4){: style='width: 100%'}
+   ```
+   ```html
+   <video style="width: 100%" muted="" controls="" alt="type:video">
+      <source src="video.mp4" type="video/mp4">
+   </video>
+   ```
+
+3. The plugin attributes can be disabled for specific video element by adding `disable-global-config` attribute.
+   ```markdown
+   ![type:video](video.mp4){: disable-global-config style='width: 100%'}
+   ```
+   ```html
+   <video alt="type:video" style="width: 100%">
+      <source src="video.mp4" type="video/mp4">
+   </video>
+   ```
+
+4. The extension attribute `src` will override video source... Do what you want with this info 🙃.
+   ```markdown
+   ![type:video](video.mp4){: src='another-video.mp4'}
+   ```
+   ```html
+   <video style="width:50%" muted="" controls="" alt="type:video">
+      <source src="another-video.mp4" type="video/mp4">
+   </video>
+   ```
+
 ### Marker
 
 By default, the string `type:video` is used as a **marker** in the Markdown syntax.
@@ -239,6 +297,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ## Did you like it?
 
-<a href="https://www.buymeacoffee.com/soulless.viewer"> 
+<a href="https://www.buymeacoffee.com/soulless.viewer">
   <img height="50em" src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="soulless.viewer" />
 </a>
