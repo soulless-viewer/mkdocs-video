@@ -47,7 +47,7 @@ class Plugin(mkdocs.plugins.BasePlugin):
         if "video" in tag.attrib and "iframe" not in tag.attrib:
             is_video = True
             tag.attrib.pop('video')
-        elif  "iframe" in tag.attrib and "video" not in tag.attrib:
+        elif "iframe" in tag.attrib and "video" not in tag.attrib:
             is_video = False
             tag.attrib.pop('iframe')
         # if someone put both tags, remove them and use global default
