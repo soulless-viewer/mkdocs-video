@@ -46,12 +46,12 @@ class Plugin(mkdocs.plugins.BasePlugin):
         # use global default if both are specified
         if "video" in tag.attrib:
             if "iframe" not in tag.attrib:
-              is_video = True
-            tag.attrib.pop('video')
+                is_video = True
+                tag.attrib.pop('video')
         if "iframe" in tag.attrib:
             if "video" not in tag.attrib:
-              is_video = False
-            tag.attrib.pop('iframe')
+                is_video = False
+                tag.attrib.pop('iframe')
 
         repl_tag = lxml.html.Element("video" if is_video else "iframe")
 
