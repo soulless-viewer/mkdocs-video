@@ -84,78 +84,78 @@ The following parameters can be used to change the functionality and appearance 
 
 When using this plugin and the mentioned extension together, the following rules apply *(with an illustrative examples)*:
 
-0. *[Let's assume we have this plugin configuration]*
+1. *[Let's assume we have this plugin configuration]*
 
-  ```yaml
-  # mkdocs.yml
-  markdown_extensions:
-    - attr_list
-  plugins:
-    - mkdocs-video:
-        is_video: True
-        video_muted: True
-        video_controls: True
-        css_style:
-          width: "50%"
-  ```
+   ```yaml
+   # mkdocs.yml
+   markdown_extensions:
+     - attr_list
+   plugins:
+     - mkdocs-video:
+         is_video: True
+         video_muted: True
+         video_controls: True
+         css_style:
+           width: "50%"
+   ```
 
-1. The plugin attributes are used globally by default
+2. The plugin attributes are used globally by default
 
-  ```markdown
-  ![type:video](video.mp4)
-  ```
+   ```markdown
+   ![type:video](video.mp4)
+   ```
 
-  ```html
-  <video style="width:50%" muted="" controls="">
-    <source src="video.mp4" type="video/mp4">
-  </video>
-  ```
+   ```html
+   <video style="width:50%" muted="" controls="">
+     <source src="video.mp4" type="video/mp4">
+   </video>
+   ```
 
-2. The extension attributes will override the corresponding plugin attributes, but the rest will remain by default.
+3. The extension attributes will override the corresponding plugin attributes, but the rest will remain by default.
 
-  ```markdown
-  ![type:video](video.mp4){: style='width: 100%'}
-  ```
+   ```markdown
+   ![type:video](video.mp4){: style='width: 100%'}
+   ```
 
-  ```html
-  <video style="width: 100%" muted="" controls="">
-    <source src="video.mp4" type="video/mp4">
-  </video>
-  ```
+   ```html
+   <video style="width: 100%" muted="" controls="">
+     <source src="video.mp4" type="video/mp4">
+   </video>
+   ```
 
-3. The plugin attributes can be disabled for specific video element by adding `disable-global-config` attribute.
+4. The plugin attributes can be disabled for specific video element by adding `disable-global-config` attribute.
 
-  ```markdown
-  ![type:video](video.mp4){: disable-global-config style='width: 100%'}
-  ```
+   ```markdown
+   ![type:video](video.mp4){: disable-global-config style='width: 100%'}
+   ```
 
-  ```html
-  <video style="width: 100%">
-    <source src="video.mp4" type="video/mp4">
-  </video>
-  ```
+   ```html
+   <video style="width: 100%">
+     <source src="video.mp4" type="video/mp4">
+   </video>
+   ```
 
-4. The extension attribute `src` will override video source... Do what you want with this info 🙃.
+5. The extension attribute `src` will override video source... Do what you want with this info 🙃.
 
-  ```markdown
-  ![type:video](video.mp4){: src='another-video.mp4'}
-  ```
+   ```markdown
+   ![type:video](video.mp4){: src='another-video.mp4'}
+   ```
 
-  ```html
-  <video style="width:50%" muted="" controls="">
-    <source src="another-video.mp4" type="video/mp4">
-  </video>
-  ```
+   ```html
+   <video style="width:50%" muted="" controls="">
+     <source src="another-video.mp4" type="video/mp4">
+   </video>
+   ```
 
-5. To enforce the desired tag and override the [video tag global config](#tag-video), specify the `video` or `iframe` attribute.
+6. To enforce the desired tag and override the [video tag global config](#tag-video), specify the `video` or `iframe` attribute.
 
-  ```markdown
-  ![type:video](https://www.youtube.com/embed/LXb3EKWsInQ){: iframe}
-  ```
+   ```markdown
+   ![type:video](https://www.youtube.com/embed/LXb3EKWsInQ){: iframe}
+   ```
 
-  ```html
-  <iframe src="https://www.youtube.com/embed/LXb3EKWsInQ" style="width:50%" frameborder="0" allowfullscreen></iframe>
-  ```
+   ```html
+   <iframe src="https://www.youtube.com/embed/LXb3EKWsInQ" style="width:50%" frameborder="0" allowfullscreen></iframe>
+   ```
 
 ### Marker
 
@@ -324,8 +324,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ## Did you like it?
 
+<!-- markdownlint-disable MD033 -->
 <a href="https://www.buymeacoffee.com/soulless.viewer">
   <img height="50em" src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="soulless.viewer" />
 </a>
-
-[![Buy me a coffee](https://cdn.buymeacoffee.com/buttons/v2/default-blue.png)](https://www.buymeacoffee.com/soulless.viewer)
+<!-- markdownlint-enable MD033 -->
