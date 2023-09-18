@@ -25,13 +25,14 @@ class Plugin(mkdocs.plugins.BasePlugin):
 
 
     def on_page_content(self, html, page, config, files):
-        content = lxml.html.fromstring(html)
-        tags = content.xpath(f'//img[@alt="{self.config["mark"]}" and @src]')
-        for tag in tags:
-            if not tag.attrib.get("src"):
-                continue
-            tag.getparent().replace(tag, self.create_repl_tag(tag))
-        return lxml.html.tostring(content, encoding="unicode")
+        if html:
+            content = lxml.html.fromstring(html)
+            tags = content.xpath(f'//img[@alt="{self.config["mark"]}" and @src]')
+            for tag in tags:
+                if not tag.attrib.get("src"):
+                    continue
+                tag.getparent().replace(tag, self.create_repl_tag(tag))
+            return lxml.html.tostring(content, encoding="unicode")
 
 
     def create_repl_tag(self, tag):
