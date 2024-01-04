@@ -1,3 +1,6 @@
+> [!WARNING]  
+> This project is no longer maintained. You can still use it, but there will be no more updates.
+
 # MkDocs Video
 
 This plugin allows you to embed videos on the documentation pages using a simple Markdown syntax.
