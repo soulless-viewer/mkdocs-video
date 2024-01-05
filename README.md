@@ -7,25 +7,30 @@ This plugin allows you to embed videos on the documentation pages using a simple
 
 ## Contents
 
-* [Installation](#installation)
-* [Usage](#usage)
-* [Configuration](#configuration)  
-    * [Marker](#marker)
-    * [Style](#style)
-    * [Tag `<video>`](#tag-video)
-    * [Video type](#video-type)
-    * [Video autoplay](#video-autoplay)
-    * [Video loop](#video-loop)
-    * [Video muted](#video-muted)
-    * [Video controls](#video-controls)
-* [Embedding examples](#embedding-examples)
+- [MkDocs Video](#mkdocs-video)
+  - [Contents](#contents)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Configuration](#configuration)
+    - [Marker](#marker)
+    - [Style](#style)
+    - [Tag `<video>`](#tag-video)
+    - [Video type](#video-type)
+    - [Video autoplay](#video-autoplay)
+    - [Video loop](#video-loop)
+    - [Video muted](#video-muted)
+    - [Video controls](#video-controls)
+  - [Embedding examples](#embedding-examples)
+  - [Contributing](#contributing)
+  - [License](#license)
+  - [Did you like it?](#did-you-like-it)
 
 ## Installation
 
 Install the package with pip:
 
 ```bash
-$ pip install mkdocs-video
+pip install mkdocs-video
 ```
 
 Enable the plugin in the `mkdocs.yml` file:
@@ -47,7 +52,7 @@ To add a video to the final documentation page, you need to use the Markdown syn
 
 *content folder structure*
 
-```
+```text
 ├── content
 |   ├── ...
 │   ├── video.md
@@ -57,7 +62,8 @@ To add a video to the final documentation page, you need to use the Markdown syn
 ```
 
 *video.md*
-```
+
+```markdown
 # Video example
 
 Lorem ipsum dolor sit amet
@@ -67,10 +73,11 @@ Lorem ipsum dolor sit amet
 
 *\<mkdocs-url>/video*
 
-![](https://user-images.githubusercontent.com/29832584/123962612-5188db00-d9ba-11eb-9e0f-1470ca57c452.png)
+![example](https://user-images.githubusercontent.com/29832584/123962612-5188db00-d9ba-11eb-9e0f-1470ca57c452.png)
 
 You can also use relative paths for videos stored together with your content
-```
+
+```markdown
 ![type:video](./videos/costa_rica.mp4)
 ```
 
@@ -80,7 +87,8 @@ The following parameters can be used to change the functionality and appearance 
 
 When using this plugin and the mentioned extension together, the following rules apply *(with an illustrative examples)*:
 
-0. *[Let's assume we have this plugin configuration]*
+1. *[Let's assume we have this plugin configuration]*
+
    ```yaml
    # mkdocs.yml
    markdown_extensions:
@@ -94,44 +102,62 @@ When using this plugin and the mentioned extension together, the following rules
            width: "50%"
    ```
 
-1. The plugin attributes are used globally by default
+2. The plugin attributes are used globally by default
+
    ```markdown
    ![type:video](video.mp4)
    ```
+
    ```html
-   <video style="width:50%" muted="" controls="" alt="type:video">
-      <source src="video.mp4" type="video/mp4">
+   <video style="width:50%" muted="" controls="">
+     <source src="video.mp4" type="video/mp4">
    </video>
    ```
 
-2. The extension attributes will override the corresponding plugin attributes, but the rest will remain by default.
+3. The extension attributes will override the corresponding plugin attributes, but the rest will remain by default.
+
    ```markdown
    ![type:video](video.mp4){: style='width: 100%'}
    ```
+
    ```html
-   <video style="width: 100%" muted="" controls="" alt="type:video">
-      <source src="video.mp4" type="video/mp4">
+   <video style="width: 100%" muted="" controls="">
+     <source src="video.mp4" type="video/mp4">
    </video>
    ```
 
-3. The plugin attributes can be disabled for specific video element by adding `disable-global-config` attribute.
+4. The plugin attributes can be disabled for specific video element by adding `disable-global-config` attribute.
+
    ```markdown
    ![type:video](video.mp4){: disable-global-config style='width: 100%'}
    ```
+
    ```html
-   <video alt="type:video" style="width: 100%">
-      <source src="video.mp4" type="video/mp4">
+   <video style="width: 100%">
+     <source src="video.mp4" type="video/mp4">
    </video>
    ```
 
-4. The extension attribute `src` will override video source... Do what you want with this info 🙃.
+5. The extension attribute `src` will override video source... Do what you want with this info 🙃.
+
    ```markdown
    ![type:video](video.mp4){: src='another-video.mp4'}
    ```
+
    ```html
-   <video style="width:50%" muted="" controls="" alt="type:video">
-      <source src="another-video.mp4" type="video/mp4">
+   <video style="width:50%" muted="" controls="">
+     <source src="another-video.mp4" type="video/mp4">
    </video>
+   ```
+
+6. To enforce the desired tag and override the [video tag global config](#tag-video), specify the `video` or `iframe` attribute.
+
+   ```markdown
+   ![type:video](https://www.youtube.com/embed/LXb3EKWsInQ){: iframe}
+   ```
+
+   ```html
+   <iframe src="https://www.youtube.com/embed/LXb3EKWsInQ" style="width:50%" frameborder="0" allowfullscreen></iframe>
    ```
 
 ### Marker
@@ -148,7 +174,7 @@ plugins:
 
 Now you can use this **marker** in the Markdown syntax:
 
-```
+```markdown
 ![custom-marker](https://www.youtube.com/embed/LXb3EKWsInQ)
 ```
 
@@ -266,28 +292,29 @@ plugins:
 
 The following list contains some of the popular services, as well as examples of direct and embedded links to their videos.
 
-* YouTube
-    * https://www.youtube.com/watch?v=iSpglxHTJVM
-    * https://www.youtube.com/embed/iSpglxHTJVM
-* Vimeo
-    * https://vimeo.com/224903454
-    * https://player.vimeo.com/video/224903454
-* Dailymotion
-    * https://www.dailymotion.com/video/x7ogfqo
-    * https://www.dailymotion.com/embed/video/x7ogfqo
-* Facebook Watch
-    * https://www.facebook.com/gamechangersmovie/videos/343098689705587
-    * https://www.facebook.com/plugins/video.php?href=https://www.facebook.com/gamechangersmovie/videos/343098689705587
+- YouTube
+  - <https://www.youtube.com/watch?v=iSpglxHTJVM>
+  - <https://www.youtube.com/embed/iSpglxHTJVM>
+- Vimeo
+  - <https://vimeo.com/224903454>
+  - <https://player.vimeo.com/video/224903454>
+- Dailymotion
+  - <https://www.dailymotion.com/video/x7ogfqo>
+  - <https://www.dailymotion.com/embed/video/x7ogfqo>
+- Facebook Watch
+  - <https://www.facebook.com/gamechangersmovie/videos/343098689705587>
+  - <https://www.facebook.com/plugins/video.php?href=https://www.facebook.com/gamechangersmovie/videos/343098689705587>
 
 ## Contributing
 
-1.  Fork it.
-2.  Create your feature branch:  `git checkout -b my-new-feature`
-3.  Commit your changes:  `git commit -am 'Add some feature'`
-4.  Push to the branch:  `git push origin my-new-feature`
-5.  Submit a pull request
+1. Fork it.
+2. Create your feature branch:  `git checkout -b my-new-feature`
+3. Commit your changes:  `git commit -am 'Add some feature'`
+4. Push to the branch:  `git push origin my-new-feature`
+5. Submit a pull request
 
 ## License
+
 The MIT License (MIT)
 
 Copyright (c) 2023 Mikalai Lisitsa
@@ -300,6 +327,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ## Did you like it?
 
+<!-- markdownlint-disable MD033 -->
 <a href="https://www.buymeacoffee.com/soulless.viewer">
   <img height="50em" src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="soulless.viewer" />
 </a>
+<!-- markdownlint-enable MD033 -->

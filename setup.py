@@ -5,7 +5,7 @@ with open('README.md', encoding='utf-8') as f:
 
 setup(
     name="mkdocs-video",
-    version="1.5.0",
+    version="1.6.0",
     author="Mikalai Lisitsa",
     author_email="mikalai.lisitsa@gmail.com",
     url="https://github.com/soulless-viewer/mkdocs-video",

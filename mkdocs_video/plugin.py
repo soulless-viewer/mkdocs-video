@@ -42,6 +42,19 @@ class Plugin(mkdocs.plugins.BasePlugin):
         """
 
         is_video = self.config["is_video"]
+        # Override global config if desired tag is specified
+        # use global default if both are specified
+        if "video" in tag.attrib and "iframe" not in tag.attrib:
+            is_video = True
+            tag.attrib.pop('video')
+        elif "iframe" in tag.attrib and "video" not in tag.attrib:
+            is_video = False
+            tag.attrib.pop('iframe')
+        # if someone put both tags, remove them and use global default
+        elif "iframe" in tag.attrib and "video" in tag.attrib:
+            tag.attrib.pop('iframe')
+            tag.attrib.pop('video')
+
         repl_tag = lxml.html.Element("video" if is_video else "iframe")
 
         # Basic config if global is disabled
@@ -78,6 +91,9 @@ class Plugin(mkdocs.plugins.BasePlugin):
                 repl_tag.set("allowfullscreen")
         else:
             tag.attrib.pop("disable-global-config")
+
+        # Remove alt attribute - video/iframe doesn't have an alt attribute
+        tag.attrib.pop('alt')
 
         # Duplicate everything from original tag (except 2)
         for attr, val in tag.attrib.items():
